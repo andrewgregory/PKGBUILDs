@@ -1,0 +1,38 @@
+# Maintainer Andrew Gregory <andrew.gregory.8@gmail.com>
+
+pkgname=pacfind-git
+pkgdesc="An enhanced package search tool for pacman"
+pkgver=20120930
+pkgrel=1
+url='https://github.com/andrewgregory/pacfind'
+license=('MIT')
+arch=('i686' 'x86_64')
+makedepends=('git' 'python2-docutils')
+depends=('pacman')
+
+_gitroot='git://github.com/andrewgregory/pacfind.git'
+_gitname='pacfind'
+
+build() {
+    cd $srcdir
+
+    msg "Connecting to GIT server...."
+
+    if [ -d $startdir/src/$_gitname ] ; then
+        cd $_gitname
+        git pull origin
+        msg "The local files are updated."
+    else
+        git clone $_gitroot
+        cd $_gitname
+    fi
+
+    msg "GIT checkout done or server timeout"
+
+    make
+}
+
+package() {
+    cd $srcdir/$_gitname
+    make PREFIX=/usr DESTDIR=$pkgdir install
+}

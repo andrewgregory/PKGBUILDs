@@ -1,0 +1,56 @@
+# Maintainer Andrew Gregory <andrew.gregory.8@gmail.com>
+
+pkgname=openrc-git
+pkgdesc="Dependency based init system that works with sysvinit."
+pkgver=20121110
+pkgrel=1
+url="http://www.gentoo.org/proj/en/base/openrc/"
+license=('BSD')
+backup=('etc/openrc/rc.conf')
+arch=('i686' 'x86_64')
+depends=('openrc-arch-services-git' 'openrc-sysvinit' 'net-tools')
+provides=('openrc')
+conflicts=('openrc')
+makedepends=('git')
+
+_gitroot="git://git.overlays.gentoo.org/proj/openrc.git"
+_gitname="openrc"
+
+build() {
+    cd "$srcdir"
+
+    msg "Connecting to GIT server...."
+
+    if [ -d "$srcdir/$_gitname" ] ; then
+        cd "$_gitname"
+        git pull origin
+        msg "The local files are updated."
+    else
+        git clone "$_gitroot"
+        cd "$_gitname"
+    fi
+
+    msg "GIT checkout done or server timeout"
+}
+
+package() {
+    cd "$srcdir/$_gitname"
+
+    # openrc's makefile needs flags passed here instead of in build()
+    # put files in /etc/openrc to avoid conflict with initscripts
+    make \
+        SYSCONFDIR='/etc/openrc' \
+        BRANDING='Arch Linux' \
+        MKSELINUX='no' \
+        DESTDIR="$pkgdir" \
+        PKG_PREFIX='' \
+        MKTERMCAP=ncurses \
+        install
+
+    # standard inittab, conflicts with initscripts,
+    # does not require openrc-sysvinit
+    # install -m 644 "$srcdir/openrc/support/sysvinit/inittab" "$pkgdir/etc/inittab"
+
+    # avoid initscripts conflict, requires openrc-sysvinit
+    install -m 644 "$srcdir/openrc/support/sysvinit/inittab" "$pkgdir/etc/openrc/inittab"
+}
