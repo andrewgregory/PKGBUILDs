@@ -12,18 +12,18 @@ depends=('openrc-arch-services-git' 'openrc-sysvinit' 'net-tools')
 source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
 md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
 
-_makeargs="BRANDING='Arch Linux'"
-_makeargs+=' MKPAM=pam'
-_makeargs+=' MKSELINUX=no'
-_makeargs+=' MKTERMCAP=ncurses'
-_makeargs+=' PKG_PREFIX=""'
-_makeargs+=' SYSCONFDIR=/etc/openrc' # avoid conflict with initscripts
+_makeargs=(BRANDING='Arch Linux')
+_makeargs+=(MKPAM=pam)
+_makeargs+=(MKSELINUX=no)
+_makeargs+=(MKTERMCAP=ncurses)
+_makeargs+=(PKG_PREFIX="")
+_makeargs+=(SYSCONFDIR=/etc/openrc) # avoid conflict with initscripts
 
 package() {
     cd "$srcdir/$pkgname-$pkgver"
 
     # openrc's makefile needs flags passed here instead of in build()
-    make DESTDIR="$pkgdir" $_makeargs install
+    make DESTDIR="$pkgdir" "${_makeargs[@]}" install
 
     # standard inittab, conflicts with initscripts,
     # does not require openrc-sysvinit
