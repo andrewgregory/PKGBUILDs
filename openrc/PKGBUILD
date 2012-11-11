@@ -1,14 +1,16 @@
 # Maintainer Andrew Gregory <andrew.gregory.8@gmail.com>
 
 pkgname=openrc
-pkgdesc='Dependency based init system that works with sysvinit.'
 pkgver=0.11.4
 pkgrel=2
+pkgdesc='Dependency based init system that works with sysvinit.'
+arch=('i686' 'x86_64')
 url='http://www.gentoo.org/proj/en/base/openrc/'
 license=('BSD')
+depends=('openrc-sysvinit' 'pam' 'sh')
+optdepends=('openrc-arch-services-git: collection of services for Arch'
+            'net-tools: for network service support')
 backup=('etc/openrc/rc.conf')
-arch=('i686' 'x86_64')
-depends=('openrc-arch-services-git' 'openrc-sysvinit' 'net-tools')
 source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
 md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
 
