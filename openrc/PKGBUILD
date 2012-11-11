@@ -29,9 +29,8 @@ package() {
     cd "$srcdir"/$pkgname-$pkgver
     make DESTDIR="$pkgdir" $_makeargs install
 
-    # standard inittab, conflicts with initscripts,
-    # does not require openrc-sysvinit
-    # install -m 644 "$srcdir/openrc/support/sysvinit/inittab" "$pkgdir/etc/inittab"
+    # default path to inittab conflicts with initscripts
+    #install -m 644 support/sysvinit/inittab "$pkgdir"/etc/inittab
 
     # avoid initscripts conflict, requires openrc-sysvinit
     install -m 644 support/sysvinit/inittab "$pkgdir"/etc/openrc/inittab
