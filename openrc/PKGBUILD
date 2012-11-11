@@ -15,6 +15,7 @@ backup=(etc/openrc/inittab
 		etc/openrc/conf.d/{bootmisc,consolefont,dmesg,fsck,hostname,hwclock,keymaps}
 		etc/openrc/conf.d/{killprocs,localmount,modules,net,netmount,staticroute}
 		etc/openrc/conf.d/{tmpfiles,urandom})
+install=$pkgname.install
 source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
 md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
 
@@ -40,4 +41,7 @@ package() {
 
     # avoid initscripts conflict, requires openrc-sysvinit
     install -m 644 support/sysvinit/inittab "$pkgdir"/etc/openrc/inittab
+
+	# anything turned on by default here would be overwritten during next upgrade
+	rm -rf $pkgdir/etc/openrc/runlevels/
 }
