@@ -19,10 +19,15 @@ _makeargs+=(MKTERMCAP=ncurses)
 _makeargs+=(PKG_PREFIX="")
 _makeargs+=(SYSCONFDIR=/etc/openrc) # avoid conflict with initscripts
 
+build() {
+    cd "$srcdir"/$pkgname-$pkgver
+
+    make "${_makeargs[@]}"
+}
+
 package() {
     cd "$srcdir/$pkgname-$pkgver"
 
-    # openrc's makefile needs flags passed here instead of in build()
     make DESTDIR="$pkgdir" "${_makeargs[@]}" install
 
     # standard inittab, conflicts with initscripts,
