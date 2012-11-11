@@ -15,8 +15,10 @@ backup=(etc/openrc/inittab
         etc/openrc/conf.d/{bootmisc,consolefont,dmesg,fsck,hostname,hwclock,keymaps}
         etc/openrc/conf.d/{killprocs,localmount,modules,netmount,network,staticroute}
         etc/openrc/conf.d/{tmpfiles,urandom})
-source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
-md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
+source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2
+        $pkgname.logrotate)
+md5sums=('e15144aa512365ba5dbd216bd6c5ada3'
+         'ede356beae529d1b16b769c9da70ad52')
 
 _makeargs=(BRANDING='Arch Linux')
 _makeargs+=(MKPAM=pam)
@@ -41,4 +43,7 @@ package() {
 
     # avoid initscripts conflict, requires openrc-sysvinit
     install -m 644 support/sysvinit/inittab "$pkgdir/etc/openrc/inittab"
+
+    # rotate boot log
+    install -Dm0644 "$srcdir/$pkgname.logrotate" "$pkgdir/etc/logrotate.d/$pkgname"
 }
