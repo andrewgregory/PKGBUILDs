@@ -1,15 +1,15 @@
 # Maintainer Andrew Gregory <andrew.gregory.8@gmail.com>
 
 pkgname=openrc
-pkgdesc="Dependency based init system that works with sysvinit."
+pkgdesc='Dependency based init system that works with sysvinit.'
 pkgver=0.11.4
 pkgrel=2
-url="http://www.gentoo.org/proj/en/base/openrc/"
+url='http://www.gentoo.org/proj/en/base/openrc/'
 license=('BSD')
 backup=('etc/openrc/rc.conf')
 arch=('i686' 'x86_64')
 depends=('openrc-arch-services-git' 'openrc-sysvinit' 'net-tools')
-source=("http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2")
+source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
 md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
 
 package() {
@@ -18,7 +18,7 @@ package() {
     # openrc's makefile needs flags passed here instead of in build()
     # put files in /etc/openrc to avoid conflict with initscripts
     make \
-        SYSCONFDIR='/etc/openrc' \
+        SYSCONFDIR=/etc/openrc \
         BRANDING='Arch Linux' \
         MKSELINUX='no' \
         DESTDIR="$pkgdir" \
@@ -31,5 +31,5 @@ package() {
     # install -m 644 "$srcdir/openrc/support/sysvinit/inittab" "$pkgdir/etc/inittab"
 
     # avoid initscripts conflict, requires openrc-sysvinit
-    install -m 644 "support/sysvinit/inittab" "$pkgdir/etc/openrc/inittab"
+    install -m 644 support/sysvinit/inittab "$pkgdir/etc/openrc/inittab"
 }
