@@ -2,8 +2,8 @@
 # Contributor: Bartłomiej Piotrowski <nospam@bpiotrowski.pl>
 
 pkgname=openrc
-pkgver=0.11.4
-pkgrel=3
+pkgver=0.11.5
+pkgrel=1
 pkgdesc='Dependency based init system that works with sysvinit.'
 arch=('i686' 'x86_64')
 url='http://www.gentoo.org/proj/en/base/openrc/'
@@ -19,7 +19,7 @@ backup=(etc/openrc/inittab
 install=$pkgname.install
 source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2
 		$pkgname.logrotate)
-md5sums=('e15144aa512365ba5dbd216bd6c5ada3'
+md5sums=('4b30343b7f427f1a3c464172a45bedd4'
          'ede356beae529d1b16b769c9da70ad52')
 
 _makeargs="LIBEXECDIR=/usr/lib/$pkgname"
@@ -32,7 +32,7 @@ _makeargs+=' SYSCONFDIR=/etc/openrc' # avoid conflict with initscripts
 
 build() {
 	cd "$srcdir"/$pkgname-$pkgver
-	make DESTDIR="$pkgdir" BRANDING='Arch Linux' $_makeargs install
+	make DESTDIR="$pkgdir" BRANDING='Arch Linux' $_makeargs
 }
 
 package() {
