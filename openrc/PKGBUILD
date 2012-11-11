@@ -1,35 +1,53 @@
-# Maintainer Andrew Gregory <andrew.gregory.8@gmail.com>
+# Maintainer:  Andrew Gregory <andrew.gregory.8@gmail.com>
+# Contributor: Bartłomiej Piotrowski <nospam@bpiotrowski.pl>
 
 pkgname=openrc
-pkgdesc="Dependency based init system that works with sysvinit."
-pkgver=0.11.4
-pkgrel=2
-url="http://www.gentoo.org/proj/en/base/openrc/"
-license=('BSD')
-backup=('etc/openrc/rc.conf')
+pkgver=0.11.5
+pkgrel=1
+pkgdesc='Dependency based init system that works with sysvinit.'
 arch=('i686' 'x86_64')
-depends=('openrc-arch-services-git' 'openrc-sysvinit' 'net-tools')
-source=("http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2")
-md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
+url='http://www.gentoo.org/proj/en/base/openrc/'
+license=('BSD')
+depends=('openrc-sysvinit' 'pam' 'sh')
+optdepends=('openrc-arch-services-git: collection of services for Arch'
+			'net-tools: for networking support')
+backup=(etc/openrc/inittab
+		etc/openrc/rc.conf
+		etc/openrc/conf.d/{bootmisc,consolefont,dmesg,fsck,hostname,hwclock,keymaps}
+		etc/openrc/conf.d/{killprocs,localmount,modules,net,netmount,staticroute}
+		etc/openrc/conf.d/{tmpfiles,urandom})
+install=$pkgname.install
+source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2
+		$pkgname.logrotate)
+md5sums=('4b30343b7f427f1a3c464172a45bedd4'
+         'ede356beae529d1b16b769c9da70ad52')
+
+_makeargs="LIBEXECDIR=/usr/lib/$pkgname"
+_makeargs+=' MKNET=oldnet'
+_makeargs+=' MKPAM=pam'
+_makeargs+=' MKSELINUX=no'
+_makeargs+=' MKTERMCAP=ncurses'
+_makeargs+=' PKG_PREFIX=/usr/lib/pkgconfig'
+_makeargs+=' SYSCONFDIR=/etc/openrc' # avoid conflict with initscripts
+
+build() {
+	cd "$srcdir"/$pkgname-$pkgver
+	make DESTDIR="$pkgdir" BRANDING='Arch Linux' $_makeargs
+}
 
 package() {
-    cd "$srcdir/$pkgname-$pkgver"
+    cd "$srcdir"/$pkgname-$pkgver
+    make DESTDIR="$pkgdir" BRANDING='Arch Linux' $_makeargs install
 
-    # openrc's makefile needs flags passed here instead of in build()
-    # put files in /etc/openrc to avoid conflict with initscripts
-    make \
-        SYSCONFDIR='/etc/openrc' \
-        BRANDING='Arch Linux' \
-        MKSELINUX='no' \
-        DESTDIR="$pkgdir" \
-        PKG_PREFIX='' \
-        MKTERMCAP=ncurses \
-        install
-
-    # standard inittab, conflicts with initscripts,
-    # does not require openrc-sysvinit
-    # install -m 644 "$srcdir/openrc/support/sysvinit/inittab" "$pkgdir/etc/inittab"
+    # default path to inittab conflicts with initscripts
+    #install -m 644 support/sysvinit/inittab "$pkgdir"/etc/inittab
 
     # avoid initscripts conflict, requires openrc-sysvinit
-    install -m 644 "support/sysvinit/inittab" "$pkgdir/etc/openrc/inittab"
+    install -m 644 support/sysvinit/inittab "$pkgdir"/etc/openrc/inittab
+
+	# anything turned on by default here would be overwritten during next upgrade
+	rm -rf $pkgdir/etc/openrc/runlevels/
+
+	# rotate boot log
+	install -Dm0644 $srcdir/$pkgname.logrotate $pkgdir/etc/logrotate.d/$pkgname
 }

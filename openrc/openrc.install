@@ -1,0 +1,22 @@
+post_install() {
+	if [ ! -d /etc/openrc/runlevels ]; then
+		install -d /etc/openrc/runlevels/{boot,default,shutdown,sysinit}
+
+		for service in netmount local; do
+			ln -s /etc/openrc/init.d/$service /etc/openrc/runlevels/default/$service
+		done
+
+		for service in swap modules sysctl fsck hwclock termencoding urandom \
+						procfs mtab keymaps localmount bootmisc root hostname; do
+			ln -s /etc/openrc/init.d/$service /etc/openrc/runlevels/boot/$service
+		done
+
+		for service in devfs dmesg; do
+			ln -s /etc/openrc/init.d/$service /etc/openrc/runlevels/sysinit/$service
+		done
+
+		for service in mount-ro killprocs savecache; do
+			ln -s /etc/openrc/init.d/$service /etc/openrc/runlevels/shutdown/$service
+		done
+	fi
+}
