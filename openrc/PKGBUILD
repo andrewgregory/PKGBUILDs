@@ -16,8 +16,10 @@ backup=(etc/openrc/inittab
 		etc/openrc/conf.d/{killprocs,localmount,modules,net,netmount,staticroute}
 		etc/openrc/conf.d/{tmpfiles,urandom})
 install=$pkgname.install
-source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
-md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
+source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2
+		$pkgname.logrotate)
+md5sums=('e15144aa512365ba5dbd216bd6c5ada3'
+         'ede356beae529d1b16b769c9da70ad52')
 
 _makeargs="LIBEXECDIR=/usr/lib/$pkgname"
 _makeargs+=' MKNET=oldnet'
@@ -44,4 +46,7 @@ package() {
 
 	# anything turned on by default here would be overwritten during next upgrade
 	rm -rf $pkgdir/etc/openrc/runlevels/
+
+	# rotate boot log
+	install -Dm0644 $srcdir/$pkgname.logrotate $pkgdir/etc/logrotate.d/$pkgname
 }
