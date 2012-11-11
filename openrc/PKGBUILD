@@ -1,4 +1,5 @@
-# Maintainer Andrew Gregory <andrew.gregory.8@gmail.com>
+# Maintainer:  Andrew Gregory <andrew.gregory.8@gmail.com>
+# Contributor: Bartłomiej Piotrowski <nospam@bpiotrowski.pl>
 
 pkgname=openrc
 pkgver=0.11.4
