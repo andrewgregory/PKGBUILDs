@@ -12,8 +12,7 @@ depends=('openrc-arch-services-git' 'openrc-sysvinit' 'net-tools')
 source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
 md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
 
-_makeargs="BRANDING='Arch Linux'"
-_makeargs+=" LIBEXECDIR=/usr/lib/$pkgname"
+_makeargs="LIBEXECDIR=/usr/lib/$pkgname"
 _makeargs+=' MKPAM=pam'
 _makeargs+=' MKSELINUX=no'
 _makeargs+=' MKTERMCAP=ncurses'
@@ -22,12 +21,12 @@ _makeargs+=' SYSCONFDIR=/etc/openrc' # avoid conflict with initscripts
 
 build() {
 	cd "$srcdir"/$pkgname-$pkgver
-	make DESTDIR="$pkgdir" $_makeargs install
+	make DESTDIR="$pkgdir" BRANDING='Arch Linux' $_makeargs install
 }
 
 package() {
     cd "$srcdir"/$pkgname-$pkgver
-    make DESTDIR="$pkgdir" $_makeargs install
+    make DESTDIR="$pkgdir" BRANDING='Arch Linux' $_makeargs install
 
     # default path to inittab conflicts with initscripts
     #install -m 644 support/sysvinit/inittab "$pkgdir"/etc/inittab
