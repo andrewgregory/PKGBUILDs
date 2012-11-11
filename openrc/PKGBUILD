@@ -9,16 +9,17 @@ url='http://www.gentoo.org/proj/en/base/openrc/'
 license=('BSD')
 depends=('openrc-sysvinit' 'pam' 'sh')
 optdepends=('openrc-arch-services-git: collection of services for Arch'
-			'net-tools: for network service support')
+			'net-tools: for networking support')
 backup=(etc/openrc/inittab
 		etc/openrc/rc.conf
 		etc/openrc/conf.d/{bootmisc,consolefont,dmesg,fsck,hostname,hwclock,keymaps}
-		etc/openrc/conf.d/{killprocs,localmount,modules,netmount,network,staticroute}
+		etc/openrc/conf.d/{killprocs,localmount,modules,net,netmount,staticroute}
 		etc/openrc/conf.d/{tmpfiles,urandom})
 source=(http://dev.gentoo.org/~williamh/dist/$pkgname-$pkgver.tar.bz2)
 md5sums=('e15144aa512365ba5dbd216bd6c5ada3')
 
 _makeargs="LIBEXECDIR=/usr/lib/$pkgname"
+_makeargs+=' MKNET=oldnet'
 _makeargs+=' MKPAM=pam'
 _makeargs+=' MKSELINUX=no'
 _makeargs+=' MKTERMCAP=ncurses'
