@@ -19,7 +19,7 @@ backup=(etc/openrc/inittab
         etc/openrc/conf.d/{bootmisc,consolefont,dmesg,fsck,hostname,hwclock,keymaps}
         etc/openrc/conf.d/{killprocs,localmount,modules,netmount,network,staticroute}
         etc/openrc/conf.d/{tmpfiles,urandom})
-source=($pkgname.logrotate)
+source=(openrc.logrotate)
 md5sums=('ede356beae529d1b16b769c9da70ad52')
 
 _gitroot='git://git.overlays.gentoo.org/proj/openrc.git'
