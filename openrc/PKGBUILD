@@ -3,7 +3,7 @@
 
 pkgname=openrc
 pkgver=0.11.5
-pkgrel=1
+pkgrel=2
 pkgdesc='Dependency based init system that works with sysvinit.'
 arch=('i686' 'x86_64')
 url='http://www.gentoo.org/proj/en/base/openrc/'
@@ -26,6 +26,11 @@ _makeargs+=(MKPAM=pam)
 _makeargs+=(MKSELINUX=no)
 _makeargs+=(MKTERMCAP=ncurses)
 _makeargs+=(PKG_PREFIX="")
+_makeargs+=(LIBDIR=/usr/lib)
+_makeargs+=(SHLIBDIR=/usr/lib)
+_makeargs+=(LIBEXECDIR=/usr/libexec/rc)
+#_makeargs+=(BINDIR=/usr/bin)
+#_makeargs+=(SBINDIR=/usr/sbin)
 _makeargs+=(SYSCONFDIR=/etc/openrc) # avoid conflict with initscripts
 
 build() {
