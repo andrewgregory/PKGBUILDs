@@ -1,0 +1,28 @@
+_perlmod=Spreadsheet-Read
+pkgname=perl-spreadsheet-read
+pkgver=0.48
+pkgrel=2
+pkgdesc="Read the data from a spreadsheet"
+arch=('any')
+url="http://search.cpan.org/~HMBRAND/$_perlmod-$pkgver/"
+license=('PerlArtistic')
+depends=('perl')
+options=(!emptydirs)
+source=(http://search.cpan.org/CPAN/authors/id/H/HM/HMBRAND/$_perlmod-$pkgver.tgz)
+md5sums=('7e82dd79c82f60e4362cf25fcf1c9157')
+
+build() {
+  cd "$srcdir/$_perlmod-$pkgver"
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd "$srcdir/$_perlmod-$pkgver"
+  make test
+}
+
+package() {
+  cd "$srcdir/$_perlmod-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
